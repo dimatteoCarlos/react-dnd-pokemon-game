@@ -1,0 +1,11 @@
+.msg__container {
+  width: 100%;
+  position: sticky;
+  margin-top: 2rem;
+  bottom: 2rem;
+  position: absolute;
+}
+.feedback__message {
+  color: white;
+  text-align: center;
+}

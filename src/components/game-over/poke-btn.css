@@ -1,0 +1,28 @@
+.poke__btn {
+  /* padding: 0.5rem 1rem; */
+  border-radius: 0.5rem;
+
+  font-size: 1rem;
+  text-align: center;
+
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.pokeball__btn {
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+
+  border: 1px solid red;
+}
+
+.pokeball__btn:hover {
+  transition: transform 1s ease-in-out;
+  scale: 1.05;
+  transform: rotate(900deg);
+}

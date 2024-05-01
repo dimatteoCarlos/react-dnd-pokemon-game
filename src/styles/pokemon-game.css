@@ -1,0 +1,165 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+p {
+  margin: 1rem;
+}
+.msg__container {
+  display: block;
+  text-align: center;
+}
+
+.main__container {
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.draggable__elements__container,
+.droppable__elements__container {
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: space-around;
+  align-items: center;
+
+  min-width: 16rem;
+  height: 100%;
+
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  margin: 0 1rem 1.5rem 0;
+}
+
+.character__img__container {
+  display: inline-block;
+  text-align: center;
+
+  min-width: 6rem;
+  min-height: 6rem;
+  width: 6.5rem;
+  height: 6.5rem;
+
+  position: relative;
+}
+
+.character__img {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.character__img--draggable.visible,
+.character__img--droppable.visible {
+  visibility: visible;
+}
+.character__img--draggable.hidden,
+.character__img--droppable.hidden {
+  visibility: hidden;
+}
+.character__img__container--droppable {
+  display: inline-block;
+  text-align: center;
+
+  min-width: 6rem;
+  min-height: 6rem;
+  width: 6.5rem;
+  height: 6.5rem;
+
+  position: relative;
+}
+
+.character__img__container--droppable img {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.character_name__container {
+  min-width: 5rem;
+  min-height: 5rem;
+  height: 6.5rem;
+  width: 6.5;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+}
+
+.character__name {
+  border: 3px dashed brown;
+  padding: 0 0.25rem;
+
+  font-size: 0.55rem;
+  color: black;
+  letter-spacing: 1px;
+  line-height: 1rem;
+
+  width: max-content;
+  min-width: 6rem;
+  height: 90%;
+
+  text-transform: capitalize;
+
+  text-align: center;
+  place-content: center center;
+}
+
+.character__name--droppable.hidden {
+  height: 8rem;
+  z-index: -1;
+  color: rgba(244, 244, 244, 0.25);
+  border: none;
+  place-content: end center;
+}
+
+.character__name:hover {
+  color: rgb(3, 121, 21);
+  color: rgb(209, 26, 26);
+}
+
+.feedback {
+  text-align: center;
+  font-size: 1rem;
+  color: white;
+  margin-top: 1rem;
+}
+
+.helpName {
+  font-size: 0.5rem;
+  padding-right: 10px;
+  margin-bottom: 1rem;
+  color: transparent;
+}
+
+.helpName:hover {
+  font-size: 0.5rem;
+  padding-right: 10px;
+  margin-bottom: 1rem;
+  color: rgba(5, 4, 4, 0.7);
+
+  display: block;
+  visibility: visible;
+}
+
+.helpName.hidden {
+  visibility: hidden;
+}

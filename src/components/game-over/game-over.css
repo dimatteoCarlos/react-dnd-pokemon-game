@@ -1,0 +1,12 @@
+.msg__container {
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  height:100% svh
+}
+.gameOver__message {
+  font-size: 2rem;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
