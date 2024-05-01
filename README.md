@@ -1,5 +1,7 @@
 # React + TypeScript + Vite
 
+Dran and Drop Pokemon game - in react with typescript and without external DnD library, using pokemon api data fetching.  Enjoy it!!
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
