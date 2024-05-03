@@ -17,11 +17,13 @@ export function rndNumArrayGen(
   let randomNumbersArray: number[] = [];
   //if min value of range is <=0 then is set to 1
   minRndNumber <= 0 ? (minRndNumber = 1) : null;
+  maxRndNumber >1000 ? (maxRndNumber = 1000) : null;
 
   //arrLen must be equal or greater than the quantity of numbers available inside the range, if not, then, the arrLen (array length) is limited to the qty of numbers available in the range ------
   const limit = Math.floor(Math.abs(maxRndNumber - minRndNumber) + 1);
 
   // console.log({ limit });
+
   arrLen > limit ? (arrLen = limit) : null;
 
   for (let i = 0; i < arrLen; i++) {
@@ -37,9 +39,7 @@ export function rndNumArrayGen(
   return randomNumbersArray;
 }
 
-
-export 
-const rangeLevelFn = (
+export const rangeLevelFn = (
   level: number
 ):
   | 'Easiest'
@@ -50,7 +50,7 @@ const rangeLevelFn = (
   | 'Hard'
   | 'Hardest'
   | undefined => {
-  if (level === 10) {
+  if (level <= 10) {
     return 'Easiest';
   }
   if (level <= 50) {
@@ -62,5 +62,30 @@ const rangeLevelFn = (
   if (level <= 250) return 'Medium';
   if (level <= 500) return 'High';
   if (level <= 750) return 'Hard';
-  if (level <= 1000) return 'Hardest';
+  if (level > 750) return 'Hardest';
 };
+//------------------------------
+export function localStoredInfo(
+  ls_key: string,
+  message: string = 'Your last info stored is:'
+): {
+  storedInfo: string;
+  infoMsg: string;
+} | null {
+  const storedInfo = window.localStorage.getItem(ls_key);
+
+  if (storedInfo !== undefined && storedInfo) {
+    const infoMsg = `${message}: ${storedInfo}`;
+
+    //refactor to include a callback function
+    // const infoMsg = `Your last info stored was: ${storedInfo} : ${rangeLevelFn(
+    //   +storedInfo
+    // )}`    ;
+
+    console.warn(infoMsg);
+
+    return { storedInfo: storedInfo, infoMsg: infoMsg };
+  } else {
+    return null;
+  }
+}

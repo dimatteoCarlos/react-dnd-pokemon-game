@@ -3,14 +3,16 @@ import Title from './components/Title';
 import RangeInputSlider from './components/range-input-slider/RangeInputSlider';
 import GameOver from './components/game-over/GameOver';
 import FeedbackMsg from './components/feedback-message/FeedbackMessage.tsx';
-import { rndNumArrayGen } from './helpers/utilities.ts';
-import { rangeLevelFn } from './helpers/utilities.ts';
+import { rndNumArrayGen } from './utilities/utilities.ts';
+import { rangeLevelFn } from './utilities/utilities.ts';
 import './styles/pokemon-game.css';
 import Footer from './components/footer/Footer.tsx';
 
 //set values ----------------
-const CARDS = 10,
-  MINCARD = 1;
+const CARDS: number = 10,
+  MINCARD: number = 1,
+  MAXCARD: number = 1000,
+  STEP: number = 5;
 //----------------
 const title = 'Guess the Pokemon';
 const subTitle = 'Drag and Drop the pokemon';
@@ -41,16 +43,51 @@ const initialLevel = localStoredLevel()
   ? Number(localStoredLevel()?.level)
   : 10;
 
+type DataType = {
+  id: string;
+  name: string;
+  itemStatus: boolean | null | undefined;
+  characterUrlImg?: string;
+
+  sprites: {
+    other: {
+      ['official-artwork']: { front_default: string };
+    };
+  };
+};
+
+//-----------------
+const initialDataList: DataType[] = [
+  {
+    id: '',
+    name: '',
+    itemStatus: false,
+
+    sprites: {
+      other: {
+        ['official-artwork']: { front_default: '' },
+      },
+    },
+
+    characterUrlImg: '',
+  },
+];
+
 //----------------------------------
 function PokemonGame() {
   //set state variables
   const [level, setLevel] = useState<number>(initialLevel);
 
-  let [dataList, setDataList] = useState<{}[]>([]);
+  let [dataList, setDataList] = useState<DataType[]>(initialDataList);
 
   const [charactersName, setCharactersName] = useState<
-    Array<{ id: string; name: string; imgUrl: string; itemStatus: Boolean }>
-  >([{ id: '', name: '', imgUrl: '', itemStatus: false }]);
+    Array<{
+      id: string;
+      name: string;
+      characterUrlImg: string;
+      itemStatus: boolean;
+    }>
+  >([{ id: '', name: '', characterUrlImg: '', itemStatus: false }]);
 
   const [draggedNodeData, setDraggedNodeData] = useState<null | string>(null);
 
@@ -87,6 +124,7 @@ function PokemonGame() {
         }
 
         let data = await response.json();
+
         data = { ...data, itemStatus: true };
 
         dataArray = [...dataArray, data];
@@ -96,7 +134,8 @@ function PokemonGame() {
           {
             id: data.id.toString(),
             name: data.name.toString().trim().toLowerCase(),
-            imgUrl: data.sprites.other['official-artwork'].front_default,
+            characterUrlImg:
+              data.sprites.other['official-artwork'].front_default,
             itemStatus: false,
           },
         ];
@@ -110,13 +149,14 @@ function PokemonGame() {
         dataNamesArray.sort(() => Math.random() - 0.5).reverse() //shuffled
       );
     }
-    //*************************/
-    let dataArray: {}[] = [],
+    //**************************/
+    // let dataArray: {}[] = [],
+    let dataArray: Array<DataType> = [],
       dataNamesArray: {
         id: string;
         name: string;
-        imgUrl: string;
-        itemStatus: Boolean;
+        characterUrlImg: string;
+        itemStatus: boolean;
       }[] = [];
 
     for (let i = 0; i < arrayLen; i++) {
@@ -188,64 +228,73 @@ function PokemonGame() {
           <Title title={title} />
         </header>
 
-        {!isGameover && <RangeInputSlider level={level} setLevel={setLevel} />}
+        {!isGameover && (
+          <RangeInputSlider
+            level={level}
+            setLevel={setLevel}
+            min={CARDS}
+            max={MAXCARD}
+            step={STEP}
+          />
+        )}
 
         {isGameover && <GameOver setGameover={setIsGameover} />}
 
         <div className='draggable__elements__container'>
-          {dataList.map((character, ind) => {
-            const {
-              id,
-              name,
-              sprites: {
-                other: {
-                  ['official-artwork']: { front_default: characterUrlImg },
+          {dataList &&
+            dataList.map((character, ind) => {
+              const {
+                id,
+                name,
+                sprites: {
+                  other: {
+                    ['official-artwork']: { front_default: characterUrlImg },
+                  },
                 },
-              },
-              itemStatus,
-            } = character;
+                itemStatus,
+              } = character;
 
-            return (
-              <div
-                className='character__img__container'
-                key={`${ind}_${id}`}
-                id={id}
-              >
-                {id && (
-                  <>
-                    <img
-                      src={characterUrlImg}
-                      alt={`img_${name}`}
-                      id={id}
-                      draggable={itemStatus}
-                      className={`
+              return (
+                <div
+                  className='character__img__container'
+                  key={`${ind}_${id}`}
+                  id={id}
+                >
+                  {id && (
+                    <>
+                      <img
+                        src={characterUrlImg}
+                        alt={`img_${name}`}
+                        id={id}
+                        draggable={itemStatus!}
+                        className={`
                       character__img character__img--draggable ${
                         itemStatus ? 'visible' : 'hidden'
                       }
                       
                       `}
-                      onDragStart={(e) => handleDragStart(e, name)}
-                    />
+                        onDragStart={(e) => handleDragStart(e, name)}
+                      />
 
-                    <div
-                      draggable
-                      className={`helpName   ${
-                        itemStatus ? 'visible' : 'hidden'
-                      }`}
-                    >
-                      {name}
-                    </div>
-                  </>
-                )}
-              </div>
-            );
-          })}
+                      <div
+                        draggable
+                        className={`helpName   ${
+                          itemStatus ? 'visible' : 'hidden'
+                        }`}
+                      >
+                        {name}
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })}
         </div>
         <Title title={subTitle} />
 
         <div className='droppable__elements__container'>
           {charactersName.map((character, _) => {
-            const { id, name, imgUrl, itemStatus } = character;
+            const { id, name, characterUrlImg, itemStatus } = character;
 
             return (
               <div
@@ -254,7 +303,7 @@ function PokemonGame() {
                 key={`${id}_${name}`}
               >
                 <img
-                  src={imgUrl}
+                  src={characterUrlImg}
                   alt={`img_${id}`}
                   draggable={false}
                   className={`

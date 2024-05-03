@@ -1,8 +1,15 @@
+/*
+RangeInputSlider.tsx
+Parent:PokemonGame.tsx
+*/
 import './rangeInputSlider.css';
 
 type RangeInpuSliderPropType = {
   setLevel: React.Dispatch<React.SetStateAction<number>>;
   level: number;
+  min: number;
+  max: number;
+  step: number;
 };
 
 const rangeLevelFn = (
@@ -16,7 +23,7 @@ const rangeLevelFn = (
   | 'Hard'
   | 'Hardest'
   | undefined => {
-  if (level === 10) {
+  if (level <= 10) {
     return 'Easiest';
   }
   if (level <= 50) {
@@ -28,12 +35,15 @@ const rangeLevelFn = (
   if (level <= 250) return 'Medium';
   if (level <= 500) return 'High';
   if (level <= 750) return 'Hard';
-  if (level <= 1000) return 'Hardest';
+  if (level > 750) return 'Hardest';
 };
 
 function RangeInputSlider({
   level,
   setLevel,
+  min = 1,
+  max = 1000,
+  step = 1,
 }: RangeInpuSliderPropType): JSX.Element {
   function handleInputSlider(e: React.ChangeEvent<HTMLInputElement>) {
     setLevel(+e.target.value);
@@ -45,11 +55,11 @@ function RangeInputSlider({
         <input
           type='range'
           className='range__slider'
-          max={1000}
-          min={10}
+          max={max}
+          min={min}
           value={level}
           onChange={(e) => handleInputSlider(e)}
-          step={5}
+          step={step}
           id='input__range__slider'
         />
 
