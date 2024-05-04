@@ -2,10 +2,12 @@
 RangeInputSlider.tsx
 Parent:PokemonGame.tsx
 */
+import { useEffect } from 'react';
 import './rangeInputSlider.css';
 
 type RangeInpuSliderPropType = {
   setLevel: React.Dispatch<React.SetStateAction<number>>;
+  setDebounceInputLevel: React.Dispatch<React.SetStateAction<number>>;
   level: number;
   min: number;
   max: number;
@@ -37,18 +39,27 @@ const rangeLevelFn = (
   if (level <= 750) return 'Hard';
   if (level > 750) return 'Hardest';
 };
-
+//Component------------------
 function RangeInputSlider({
   level,
   setLevel,
+  setDebounceInputLevel,
   min = 1,
   max = 1000,
   step = 1,
 }: RangeInpuSliderPropType): JSX.Element {
+  //----------------------------------------
   function handleInputSlider(e: React.ChangeEvent<HTMLInputElement>) {
     setLevel(+e.target.value);
   }
-
+  //Debouncing input level from slider-------
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebounceInputLevel(level);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [level, 200]);
+  //----------------------------------------
   return (
     <>
       <div className='range__slider__container'>

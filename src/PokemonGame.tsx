@@ -12,7 +12,17 @@ import Footer from './components/footer/Footer.tsx';
 const CARDS: number = 10,
   MINCARD: number = 1,
   MAXCARD: number = 1000,
-  STEP: number = 5;
+  STEP: number = 3;
+
+//fetch config parameters-----------
+
+const URLBASE = 'https://pokeapi.co/api/v2/pokemon/';
+const FETCH_OPTIONS = {
+  header: { 'Content/type': 'application/json;chartset=utf-8' },
+};
+
+const options = { method: 'GET' };
+
 //----------------
 const title = 'Guess the Pokemon';
 const subTitle = 'Drag and Drop the pokemon';
@@ -38,7 +48,7 @@ function localStoredLevel() {
     return null;
   }
 }
-
+//----------------
 const initialLevel = localStoredLevel()
   ? Number(localStoredLevel()?.level)
   : 10;
@@ -97,77 +107,13 @@ function PokemonGame() {
 
   const [isGameover, setIsGameover] = useState<boolean>(false);
 
-  useEffect(() => {
-    //generate a random numbers array---
+  const [debounceInputLevel, setDebounceInputLevel] = useState(level);
 
-    const randomNumbersArray = rndNumArrayGen(CARDS, level, MINCARD);
-    const arrayLen = randomNumbersArray.length;
+  //variable-------------------------
 
-    //fetch config parameters-----------
+  //-------------
 
-    const URLBASE = 'https://pokeapi.co/api/v2/pokemon/';
-    const FETCH_OPTIONS = {
-      header: { 'Content/type': 'application/json;chartset=utf-8' },
-    };
-
-    const options = { method: 'GET' };
-
-    //fetch function------------------------
-    async function getPokemonData(url: string) {
-      try {
-        const response = await fetch(url, { ...FETCH_OPTIONS, ...options });
-
-        if (!response.ok) {
-          const errMsg = `Something went wrong!.Status: ${response.status}`;
-
-          throw new Error(errMsg);
-        }
-
-        let data = await response.json();
-
-        data = { ...data, itemStatus: true };
-
-        dataArray = [...dataArray, data];
-
-        dataNamesArray = [
-          ...dataNamesArray,
-          {
-            id: data.id.toString(),
-            name: data.name.toString().trim().toLowerCase(),
-            characterUrlImg:
-              data.sprites.other['official-artwork'].front_default,
-            itemStatus: false,
-          },
-        ];
-      } catch (error) {
-        console.log(error);
-      }
-
-      setDataList(dataArray);
-
-      setCharactersName(
-        dataNamesArray.sort(() => Math.random() - 0.5).reverse() //shuffled
-      );
-    }
-    //**************************/
-    // let dataArray: {}[] = [],
-    let dataArray: Array<DataType> = [],
-      dataNamesArray: {
-        id: string;
-        name: string;
-        characterUrlImg: string;
-        itemStatus: boolean;
-      }[] = [];
-
-    for (let i = 0; i < arrayLen; i++) {
-      const characterId = randomNumbersArray[i];
-
-      const url = `${URLBASE + characterId}`;
-
-      getPokemonData(url);
-    }
-  }, [level]);
-
+  //Handling functions
   function handleDragStart(e: React.DragEvent<HTMLElement>, name: string) {
     e.dataTransfer.setData('text/plain', e.currentTarget.id);
 
@@ -220,7 +166,71 @@ function PokemonGame() {
       setFeedbackMsg(feedbackMsgOptions.initial);
     }, 2000);
   }
-  //**********************
+  //==========================================
+  useEffect(() => {
+    //generate a random numbers array---
+
+    const randomNumbersArray = rndNumArrayGen(CARDS, level, MINCARD);
+    const arrayLen = randomNumbersArray.length;
+
+    //fetch function------------------------
+    async function getPokemonData(url: string) {
+      try {
+        const response = await fetch(url, { ...FETCH_OPTIONS, ...options });
+
+        if (!response.ok) {
+          const errMsg = `Something went wrong!.Status: ${response.status}`;
+
+          throw new Error(errMsg);
+        }
+
+        let data = await response.json();
+
+        data = { ...data, itemStatus: true };
+
+        dataArray = [...dataArray, data];
+
+        dataNamesArray = [
+          ...dataNamesArray,
+          {
+            id: data.id.toString(),
+            name: data.name.toString().trim().toLowerCase(),
+            characterUrlImg:
+              data.sprites.other['official-artwork'].front_default,
+            itemStatus: false,
+          },
+        ];
+      } catch (error) {
+        console.log(error);
+      }
+
+      setDataList(dataArray);
+
+      setCharactersName(
+        dataNamesArray.sort(() => Math.random() - 0.5).reverse() //shuffled
+      );
+    }
+
+    //Logic Flow starts here ***********************/
+
+    let dataArray: Array<DataType> = [],
+      dataNamesArray: {
+        id: string;
+        name: string;
+        characterUrlImg: string;
+        itemStatus: boolean;
+      }[] = [];
+
+    for (let i = 0; i < arrayLen; i++) {
+      const characterId = randomNumbersArray[i];
+
+      const url = `${URLBASE + characterId}`;
+
+      getPokemonData(url);
+    }
+  }, [debounceInputLevel]);
+
+  //Render zone **********************
   return (
     <>
       <section className='main__container'>
@@ -232,6 +242,7 @@ function PokemonGame() {
           <RangeInputSlider
             level={level}
             setLevel={setLevel}
+            setDebounceInputLevel={setDebounceInputLevel}
             min={CARDS}
             max={MAXCARD}
             step={STEP}
