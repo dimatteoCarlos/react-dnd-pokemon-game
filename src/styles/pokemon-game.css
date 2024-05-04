@@ -62,6 +62,10 @@ p {
   cursor: pointer;
 }
 
+.character__img {
+  animation: fade 1s ease-in both;
+}
+
 .character__img--draggable.visible,
 .character__img--droppable.visible {
   visibility: visible;
@@ -102,6 +106,10 @@ p {
   top: 0px;
   left: 0px;
   z-index: 10;
+
+
+
+
 }
 
 .character__name {
@@ -121,6 +129,9 @@ p {
 
   text-align: center;
   place-content: center center;
+
+  /* border:10px solid red; */
+ 
 }
 
 .character__name--droppable.hidden {
@@ -163,3 +174,19 @@ p {
 .helpName.hidden {
   visibility: hidden;
 }
+
+@keyframes fade {
+  0% {
+    scale: 0;
+  }
+
+  50% {
+    scale: 0.65;
+  }
+
+  50% {
+    scale: 1;
+  }
+}
+
+

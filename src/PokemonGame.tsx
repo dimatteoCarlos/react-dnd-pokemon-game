@@ -7,6 +7,9 @@ import { rndNumArrayGen } from './utilities/utilities.ts';
 import { rangeLevelFn } from './utilities/utilities.ts';
 import './styles/pokemon-game.css';
 import Footer from './components/footer/Footer.tsx';
+import './styles/animations.css';
+
+const animationUtilities = ['slideInLeft', 'slideInRight', 'rotate', 'bounce'];
 
 //set values ----------------
 const CARDS: number = 10,
@@ -324,11 +327,27 @@ function PokemonGame() {
                   `}
                 />
 
-                <div className={`character_name__container `}>
+                <div
+                  className={`character_name__container
+                
+                
+                
+                `}
+                >
                   <p
                     className={`
                     character__name character__name--droppable
                     ${!itemStatus ? 'visible' : 'hidden'}
+                    animate
+                    ${
+                      points == 0
+                        ? animationUtilities.sort(() => Math.random() - 0.5)[
+                            Math.floor(
+                              Math.random() * animationUtilities.length
+                            )
+                          ]
+                        : ''
+                    }
                   `}
                     id={id}
                     draggable={false}
