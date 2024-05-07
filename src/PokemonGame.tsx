@@ -169,7 +169,7 @@ function PokemonGame() {
       setFeedbackMsg(feedbackMsgOptions.initial);
     }, 2000);
   }
-  //==========================================
+  //=========================================
   useEffect(() => {
     //generate a random numbers array---
 
@@ -329,9 +329,7 @@ function PokemonGame() {
 
                 <div
                   className={`character_name__container
-                
-                
-                
+
                 `}
                 >
                   <p
