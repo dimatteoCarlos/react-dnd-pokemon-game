@@ -36,6 +36,8 @@ const feedbackMsgOptions = {
   initial: '',
 };
 
+const gameoverMsg = 'You Win!';
+//-----------------------------------
 //get your last level played
 function localStoredLevel() {
   const storedLevel = window.localStorage.getItem('lastLevelPlayed');
@@ -113,8 +115,6 @@ function PokemonGame() {
   const [debounceInputLevel, setDebounceInputLevel] = useState(level);
 
   //variable-------------------------
-
-  //-------------
 
   //Handling functions
   function handleDragStart(e: React.DragEvent<HTMLElement>, name: string) {
@@ -252,7 +252,9 @@ function PokemonGame() {
           />
         )}
 
-        {isGameover && <GameOver setGameover={setIsGameover} />}
+        {isGameover && (
+          <GameOver setGameover={setIsGameover} gameoverMsg={gameoverMsg} />
+        )}
 
         <div className='draggable__elements__container'>
           {dataList &&
