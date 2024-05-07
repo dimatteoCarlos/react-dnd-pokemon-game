@@ -17,7 +17,7 @@ const PokeBtn = ({ setGameover }: PokeBtnPropType) => {
       <div className='poke__btn'>
         <img
           className='pokeball__btn'
-          src='pokeball_btn.jpg'
+          src='/pokeball_btn.jpg'
           alt='pokeball_btn'
           onClick={(e) => handleReload(e)}
         />

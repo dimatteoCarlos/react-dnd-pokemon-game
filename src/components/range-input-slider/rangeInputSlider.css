@@ -25,7 +25,7 @@
   width: 1.5rem;
   height: 1.5rem;
   border: 0;
-  background: url('pokeball3d.jpg') no-repeat center/cover;
+  background: url('/pokeball3d.jpg') no-repeat center/cover;
   border-radius: 50%;
   cursor: grabbing;
 }
@@ -36,7 +36,7 @@
   width: 1.5rem;
   height: 1.5rem;
   border: 0;
-  background: url('pokeball3d.jpg') no-repeat center/cover;
+  background: url('/pokeball3d.jpg') no-repeat center/cover;
 
   border-radius: 50%;
   cursor: grab;
