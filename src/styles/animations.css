@@ -52,6 +52,23 @@
   transform-origin: top left;
 }
 
+@keyframes rotateL {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.rotateL {
+  animation-name: rotateL;
+  animation-timing-function: linear;
+
+  transform-origin: top right;
+}
+
 @keyframes bounce {
   0%,
   20%,

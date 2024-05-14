@@ -9,7 +9,7 @@ import './styles/pokemon-game.css';
 import Footer from './components/footer/Footer.tsx';
 import './styles/animations.css';
 
-const animationUtilities = ['slideInLeft', 'slideInRight', 'rotate', 'bounce'];
+const animationUtilities = ['slideInLeft', 'slideInRight', 'rotate','rotateL', 'bounce'];
 
 //set values ----------------
 const CARDS: number = 10,
